@@ -9,6 +9,8 @@ import config from '../config.js'
 //import pkg from '../../package.json'
 
 const { nodeUrl } = config.server
+
+
 //const { name, version } = pkg
 const name = "Verify App Service"
 const version = "0.1.0"
@@ -96,9 +98,8 @@ serviceRoutes.post(
                     applicationAddress: req.body.clientAddress,
                     applicationId: req.body.applicationId,
                     // TODO datetimeApproved: ,
-                    // TODO how to name these Msig parameters?
-                    Msig0Address: "",
-                    Msig1Address: "",
+                    verifierMsigAddress: verifierMsigAddress, //M0
+                    appMsigAddress: "", //M1
                     // TODO datacap??
                     datacapAllocated: 1000000000000    
                 })
