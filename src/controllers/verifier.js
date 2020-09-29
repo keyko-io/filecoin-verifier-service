@@ -2,9 +2,9 @@
 
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
-import config from '../config'
+import config from '../config.js'
 import client from '../server.js'
-import logger from '../utils/logger'
+import logger from '../utils/logger.js'
 
 
 const Verifier = {

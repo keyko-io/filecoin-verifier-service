@@ -1,13 +1,13 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
+import 'core-js/stable/index.js'
+import 'regenerator-runtime/runtime.js'
 import express from 'express'
 import compression from 'compression'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import boxen from 'boxen'
-import config from './config'
-import logger from './utils/logger'
-import serviceRoutes from './routes/verifierServiceRouter'
+import config from './config.js'
+import logger from './utils/logger.js'
+import serviceRoutes from './routes/verifierServiceRouter.js'
 
 logger.info('Filecoin Verifier App Service...')
 

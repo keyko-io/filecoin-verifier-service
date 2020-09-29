@@ -1,11 +1,18 @@
 import express from 'express'
-import { check, body, validationResult } from 'express-validator'
-import Verifier from '../controllers/verifier'
-import config from '../config'
-import pkg from '../../package.json'
+
+import pkg from 'express-validator';
+const { check, body, validationResult } = pkg;
+//import { check, body, validationResult } from 'express-validator'
+
+import Verifier from '../controllers/verifier.js'
+import config from '../config.js'
+//import pkg from '../../package.json'
 
 const { nodeUrl } = config.server
-const { name, version } = pkg
+//const { name, version } = pkg
+const name = "Verify App Service"
+const version = "0.1.0"
+
 const serviceRoutes = express.Router()
 
 const network = nodeUrl.includes('localhost')
