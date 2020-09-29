@@ -9,7 +9,7 @@ import logger from '../utils/logger.js'
 
 const Verifier = {
 
-    verifyAppClient: async ( clientAddress, applicationId, userId, datetimeRequested) => {
+    registerApp: async ( applicationAddress, applicationId, datetimeRequested) => {
 
         // TODO Implement stuff
     }

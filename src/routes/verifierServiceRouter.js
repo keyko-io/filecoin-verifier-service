@@ -45,22 +45,22 @@ serviceRoutes.get('/', (req, res) => {
 })
 
 /*
+
 {
-  "clientAddress": "t01032",
+  "applicationAddress": "t01032",
   "applicationId": "LIKE_SLATE_ID",
-  "userId": "INTERNAL_USER_ID",
   "datetimeRequested": "2020-02-08T08:13:49Z"
 }
+
 */
 serviceRoutes.post(
-    '/verifier/client/datacap',
+    '/verifier/app/register',
     // TODO check PSK in HTTP Authorization Header
     [
-        check('clientAddress', 'Client address not sent').exists(),
+        check('applicationAddress', 'Client address not sent').exists(),
         check('applicationId', 'Client address not sent').exists(),
-        check('userId', 'Client address not sent').exists(),
         check('datetimeRequested', 'Client address not sent').exists(),
-        body('clientAddress').custom((value) => {
+        body('applicationAddress').custom((value) => {
             /* TODO Add Validations to check Filecoin Address
             if (!Eth.isAddress(value)) {
                 return Promise.reject(new Error('Invalid Ethereum address'))
@@ -82,10 +82,9 @@ serviceRoutes.post(
             try {
 
                 // TODO implement logic in verifier
-                const response = await Verifier.verifyAppClient(
-                    req.body.clientAddress,
+                const response = await Verifier.registerApp(
+                    req.body.applicationAddress,
                     req.body.applicationId,
-                    req.body.userId,
                     req.body.datetimeRequested
                 )
                  req.body.agent
@@ -94,11 +93,12 @@ serviceRoutes.post(
 
                 res.status(200).json({
                     success: true,
-                    clientAddress: req.body.clientAddress,
+                    applicationAddress: req.body.clientAddress,
                     applicationId: req.body.applicationId,
-                    userId: req.body.userId,
                     // TODO datetimeApproved: ,
-                    transactionId: txId,
+                    // TODO how to name these Msig parameters?
+                    Msig0Address: "",
+                    Msig1Address: "",
                     // TODO datacap??
                     datacapAllocated: 1000000000000    
                 })
