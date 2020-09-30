@@ -89,7 +89,7 @@ serviceRoutes.post(
                     req.body.datetimeRequested
                 )
                 
-                 console.log("response: " + response) 
+                 console.log("response:", response) 
                  const { app_multisig_addr } = response
 
                 res.status(200).json({
@@ -144,7 +144,7 @@ serviceRoutes.post(
         } else {
             try {
                 
-                const { app_multisig_addr } = await Verifier.requestDatacap(
+                const response = await Verifier.requestDatacap(
                     req.body.clientAddress,
                     req.body.applicationAddress,
                     req.body.applicationId,
@@ -152,14 +152,9 @@ serviceRoutes.post(
                     req.body.appMsigAddress,
                     req.body.datetimeRequested
                 )
-<<<<<<< HEAD
-=======
-                 req.body.agent
 
-
-                console.log("response: " + response)
+                console.log("response:", response)
                 const { txId } = response
->>>>>>> e366c3fbaecc974da62f9293aa196901b684f803
 
                 res.status(200).json({
                     success: true,

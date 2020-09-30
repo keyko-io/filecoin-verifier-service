@@ -12,7 +12,7 @@ export default {
         verifierIndexAccount: "3",
         rkhSeedphrase: "robot matrix ribbon husband feature attitude noise imitate matrix shaft resist cliff lab now gold menu grocery truth deliver camp about stand consider number",
         rkhIndexAccount: "2",
-        path: "m/44'/1'/1/0"
+        path: "m/44'/1'/0/0"
     }
     /*,
     database: {
