@@ -12,7 +12,7 @@ const endpointUrl = config.server.nodeUrl
 const token = config.server.token
 
 // ONLY FOR TESTING
-const path = "m/44'/1'/0/0"
+const path = "m/44'/1'/1/0"
 const wallet = new BasicWallet(config.testing.verifierSeedphrase, path)
 
 const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
@@ -32,6 +32,8 @@ const Verifier = {
 
         // Creates the M1 App multisig
         // TODO last paremeter is the index account in the wallet. For testing purposes we are set the value in config
+        console.log("Creating m1 multisig...")
+        console.log(wallet.getAccounts(config.testing.verifierIndexAccount))
         const app_multisig_addr = await api.newMultisig([verifierAddress, applicationAddress], 2, config.testing.verifierIndexAccount)
         console.log('M1 app_multisig_addr ', app_multisig_addr)
 
