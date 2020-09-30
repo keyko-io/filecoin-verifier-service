@@ -90,14 +90,15 @@ serviceRoutes.post(
                 )
                  req.body.agent
                 
-                const { app_multisig_addr } = response.result
+                 console.log("response: " + response) 
+                 const { app_multisig_addr } = response
 
                 res.status(200).json({
                     success: true,
                     applicationAddress: req.body.clientAddress,
                     applicationId: req.body.applicationId,
                     // TODO datetimeApproved: ,
-                    verifierMsigAddress: verifierMsigAddress, //M0
+                    verifierMsigAddress: config.verifierMsigAddress, //M0
                     appMsigAddress: app_multisig_addr, //M1
                     // TODO datacap limit for app??
                     datacapAllocated: 1000000000000    
@@ -153,17 +154,18 @@ serviceRoutes.post(
                     req.body.datetimeRequested
                 )
                  req.body.agent
-                
-                const { app_multisig_addr } = response.result
+
+
+                console.log("response: " + response)
+                const { txId } = response
 
                 res.status(200).json({
                     success: true,
+                    clientAddress: req.body.clientAddress,
                     applicationAddress: req.body.clientAddress,
                     applicationId: req.body.applicationId,
                     // TODO datetimeApproved: ,
-                    verifierMsigAddress: verifierMsigAddress, //M0
-                    appMsigAddress: app_multisig_addr, //M1
-                    // TODO datacap limit for app??
+                    // TODO datacap??
                     datacapAllocated: 1000000000000    
                 })
             } catch (error) {

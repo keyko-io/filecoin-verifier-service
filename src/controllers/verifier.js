@@ -9,7 +9,7 @@ import VerifyAPI from '@keyko-io/filecoin-verifier-tools/api/api.js'
 import BasicWallet from '../utils/basicWallet.js'
 
 const endpointUrl = config.server.nodeUrl
-const token = config.server.token
+const token = config.server.nodeToken
 
 // ONLY FOR TESTING
 const path = "m/44'/1'/1/0"
@@ -33,6 +33,7 @@ const Verifier = {
         // Creates the M1 App multisig
         // TODO last paremeter is the index account in the wallet. For testing purposes we are set the value in config
         console.log("Creating m1 multisig...")
+        console.log("token: " + token)
         console.log(wallet.getAccounts(config.testing.verifierIndexAccount))
         const app_multisig_addr = await api.newMultisig([verifierAddress, applicationAddress], 2, config.testing.verifierIndexAccount)
         console.log('M1 app_multisig_addr ', app_multisig_addr)
@@ -42,7 +43,7 @@ const Verifier = {
         
         // TODO Return value
         return {
-            app_multisig_addr: app_multisig_addr,
+            app_multisig_addr: app_multisig_addr
         }
         
 

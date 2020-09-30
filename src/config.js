@@ -2,14 +2,16 @@ export default {
     env: process.env.NODE_ENV || 'development',
     server: {
         port: process.env.SERVER_PORT || 3001,
-        nodeToken: process.env.NODE_TOKEN || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.TdGBarZKRTI5nRkQE9V_ScWj5hGlMPldskmE8oGnfos',
+        nodeToken: process.env.NODE_TOKEN || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.q9O3FVNyhln_nLN62Mflc9n_Kfh7w0unQdY0qLGqHoE',
         nodeUrl: process.env.NODE_URL || 'ws://localhost:1234/rpc/v0'
     },
-    verifierMsigAddress: "t1xxxxx",
-    verifierAddress: process.env.VERIFIER_ADDRESS ||  't01003',
+    verifierMsigAddress: "t01007",
+    verifierAddress: process.env.VERIFIER_ADDRESS ||  't01006',
     testing: {
-        verifierSeedphrase: "exit mystery juice city argue breeze film learn orange dynamic marine diary antenna road couple surge marine assume loop thought leader liquid rotate believe",
-        verifierIndexAccount: "2",
+        // verifierSeedphrase: "exit mystery juice city argue breeze film learn orange dynamic marine diary antenna road couple surge marine assume loop thought leader liquid rotate believe",
+       // verifierIndexAccount: "2",
+        verifierSeedphrase: "robot matrix ribbon husband feature attitude noise imitate matrix shaft resist cliff lab now gold menu grocery truth deliver camp about stand consider number",
+        verifierIndexAccount: "3",
         rkhSeedphrase: "robot matrix ribbon husband feature attitude noise imitate matrix shaft resist cliff lab now gold menu grocery truth deliver camp about stand consider number",
         rkhIndexAccount: "2"
         // path = "m/44'/1'/0/0"
