@@ -100,7 +100,7 @@ serviceRoutes.post(
                     verifierMsigAddress: config.verifierMsigAddress, //M0
                     appMsigAddress: app_multisig_addr, //M1
                     // TODO datacap limit for app??
-                    datacapAllocated: 1000000000000    
+                    datacapAllocated: 123_000_000_000    
                 })
             } catch (error) {
                 res.status(500).json({ success: false, message: error.message })

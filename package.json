@@ -29,7 +29,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.5.0",
     "moment": "^2.27.0",
-    "@keyko-io/filecoin-verifier-tools": "^0.4.6",
+    "@keyko-io/filecoin-verifier-tools": "../filecoin-verifier-tools",
     "@zondax/filecoin-signing-tools": "^0.7.1",
     "regenerator-runtime": "^0.13.7"
   },
