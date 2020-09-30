@@ -60,8 +60,8 @@ serviceRoutes.post(
     // TODO check PSK in HTTP Authorization Header
     [
         check('applicationAddress', 'Client address not sent').exists(),
-        check('applicationId', 'Client address not sent').exists(),
-        check('datetimeRequested', 'Client address not sent').exists(),
+        check('applicationId', 'Application ID not sent').exists(),
+        check('datetimeRequested', 'Date not sent').exists(),
         body('applicationAddress').custom((value) => {
             /* TODO Add Validations to check Filecoin Address
             if (!Eth.isAddress(value)) {
@@ -88,9 +88,8 @@ serviceRoutes.post(
                     req.body.applicationId,
                     req.body.datetimeRequested
                 )
-                 req.body.agent
                 
-                 console.log("response: " + response) 
+                 console.log("response:", response) 
                  const { app_multisig_addr } = response
 
                 res.status(200).json({
@@ -153,10 +152,8 @@ serviceRoutes.post(
                     req.body.appMsigAddress,
                     req.body.datetimeRequested
                 )
-                 req.body.agent
 
-
-                console.log("response: " + response)
+                console.log("response:", response)
                 const { txId } = response
 
                 res.status(200).json({
