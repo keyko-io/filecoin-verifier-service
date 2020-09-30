@@ -12,7 +12,8 @@ const endpointUrl = config.server.nodeUrl
 const token = config.server.nodeToken
 
 // ONLY FOR TESTING
-const path = "m/44'/1'/1/0"
+//TODO we need to instantiate some kind of wallet with the custodied Private Key
+const path = config.testing.path
 const wallet = new BasicWallet(config.testing.verifierSeedphrase, path)
 
 const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
@@ -21,10 +22,9 @@ const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
     },
  }), wallet) 
  
- //TODO we need to instantiate some kind of wallet with the custodied Private Key
-
- const verifierMsigAddress = config.verifierMsigAddress
- const verifierAddress = config.verifierAddress
+ 
+const verifierMsigAddress = config.verifierMsigAddress
+const verifierAddress = config.verifierAddress
 
 const Verifier = {
 
