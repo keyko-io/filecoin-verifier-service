@@ -83,12 +83,15 @@ serviceRoutes.post(
         } else {
             try {
 
-                const { app_multisig_addr } = await Verifier.registerApp(
+                const response = await Verifier.registerApp(
                     req.body.applicationAddress,
                     req.body.applicationId,
                     req.body.datetimeRequested
                 )
                 
+                 console.log("response: " + response) 
+                 const { app_multisig_addr } = response
+
                 res.status(200).json({
                     success: true,
                     applicationAddress: req.body.clientAddress,
@@ -149,15 +152,22 @@ serviceRoutes.post(
                     req.body.appMsigAddress,
                     req.body.datetimeRequested
                 )
+<<<<<<< HEAD
+=======
+                 req.body.agent
+
+
+                console.log("response: " + response)
+                const { txId } = response
+>>>>>>> e366c3fbaecc974da62f9293aa196901b684f803
 
                 res.status(200).json({
                     success: true,
+                    clientAddress: req.body.clientAddress,
                     applicationAddress: req.body.clientAddress,
                     applicationId: req.body.applicationId,
                     // TODO datetimeApproved: ,
-                    verifierMsigAddress: verifierMsigAddress, //M0
-                    appMsigAddress: app_multisig_addr, //M1
-                    // TODO datacap limit for app??
+                    // TODO datacap??
                     datacapAllocated: 1000000000000    
                 })
             } catch (error) {

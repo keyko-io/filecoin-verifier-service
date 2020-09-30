@@ -12,7 +12,8 @@ const endpointUrl = config.server.nodeUrl
 const token = config.server.nodeToken
 
 // ONLY FOR TESTING
-const path = "m/44'/1'/0/0"
+//TODO we need to instantiate some kind of wallet with the custodied Private Key
+const path = config.testing.path
 const wallet = new BasicWallet(config.testing.verifierSeedphrase, path)
 
 const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
@@ -20,8 +21,6 @@ const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
       return token
     },
  }), wallet) 
-
-//TODO we need to instantiate some kind of wallet with the custodied Private Key
 
 const verifierMsigAddress = config.verifierMsigAddress
 const verifierAddress = config.verifierAddress
@@ -78,6 +77,9 @@ const Verifier = {
 
         // Creates the M1 App multisig
         // TODO last paremeter is the index account in the wallet. For testing purposes we are set the value in config
+        console.log("Creating m1 multisig...")
+        console.log("token: " + token)
+        console.log(wallet.getAccounts(config.testing.verifierIndexAccount))
         const app_multisig_addr = await api.newMultisig([verifierAddress, applicationAddress], 2, config.testing.verifierIndexAccount)
         console.log('M1 app_multisig_addr ', app_multisig_addr)
 
@@ -86,7 +88,7 @@ const Verifier = {
         
         // TODO Return value
         return {
-            app_multisig_addr: app_multisig_addr,
+            app_multisig_addr: app_multisig_addr
         }
         
 
