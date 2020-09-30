@@ -60,8 +60,8 @@ serviceRoutes.post(
     // TODO check PSK in HTTP Authorization Header
     [
         check('applicationAddress', 'Client address not sent').exists(),
-        check('applicationId', 'Client address not sent').exists(),
-        check('datetimeRequested', 'Client address not sent').exists(),
+        check('applicationId', 'Application ID not sent').exists(),
+        check('datetimeRequested', 'Date not sent').exists(),
         body('applicationAddress').custom((value) => {
             /* TODO Add Validations to check Filecoin Address
             if (!Eth.isAddress(value)) {
@@ -83,21 +83,18 @@ serviceRoutes.post(
         } else {
             try {
 
-                const response = await Verifier.registerApp(
+                const { app_multisig_addr } = await Verifier.registerApp(
                     req.body.applicationAddress,
                     req.body.applicationId,
                     req.body.datetimeRequested
                 )
-                 req.body.agent
                 
-                const { app_multisig_addr } = response.result
-
                 res.status(200).json({
                     success: true,
                     applicationAddress: req.body.clientAddress,
                     applicationId: req.body.applicationId,
                     // TODO datetimeApproved: ,
-                    verifierMsigAddress: verifierMsigAddress, //M0
+                    verifierMsigAddress: config.verifierMsigAddress, //M0
                     appMsigAddress: app_multisig_addr, //M1
                     // TODO datacap limit for app??
                     datacapAllocated: 1000000000000    
@@ -144,7 +141,7 @@ serviceRoutes.post(
         } else {
             try {
                 
-                const response = await Verifier.requestDatacap(
+                const { app_multisig_addr } = await Verifier.requestDatacap(
                     req.body.clientAddress,
                     req.body.applicationAddress,
                     req.body.applicationId,
@@ -152,9 +149,6 @@ serviceRoutes.post(
                     req.body.appMsigAddress,
                     req.body.datetimeRequested
                 )
-                 req.body.agent
-                
-                const { app_multisig_addr } = response.result
 
                 res.status(200).json({
                     success: true,

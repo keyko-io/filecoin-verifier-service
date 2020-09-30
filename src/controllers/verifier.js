@@ -9,7 +9,7 @@ import VerifyAPI from '@keyko-io/filecoin-verifier-tools/api/api.js'
 import BasicWallet from '../utils/basicWallet.js'
 
 const endpointUrl = config.server.nodeUrl
-const token = config.server.token
+const token = config.server.nodeToken
 
 // ONLY FOR TESTING
 const path = "m/44'/1'/0/0"
@@ -20,15 +20,61 @@ const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
       return token
     },
  }), wallet) 
- 
- //TODO we need to instantiate some kind of wallet with the custodied Private Key
 
- const verifierMsigAddress = config.verifierMsigAddress
- const verifierAddress = config.verifierAddress
+//TODO we need to instantiate some kind of wallet with the custodied Private Key
+
+const verifierMsigAddress = config.verifierMsigAddress
+const verifierAddress = config.verifierAddress
+
+async function checkMultisig(msig) {
+    try {
+        const lst = await api.pendingTransactions(msig)
+        for (const tx of lst) {
+            console.log(msig, tx)
+            console.log(msig, tx.parsed.parsed)
+            if (tx.tx.to != verifierMsigAddress) {
+                continue
+            }
+            if (tx.parsed.name != 'propose') {
+                continue
+            }
+            if (tx.parsed.params.to != 't06') {
+                continue
+            }
+            if (tx.parsed.parsed.name != 'addVerifiedClient') {
+                continue
+            }
+            if (tx.parsed.params.cap > 12340000000000n) {
+                continue
+            }
+            await api.approvePending(msig, tx, 3)
+        }
+    }
+    catch (err) {
+        console.log('cannot read msig', msig)
+    }
+}
+
+async function listenMultisigs() {
+    while (true) {
+        let msigs = await api.listSigners(verifierMsigAddress)
+        for (let msig of msigs) {
+            console.log('Polling...', msig)
+            if (await api.actorType(msig) == 'fil/1/multisig') {
+                await checkMultisig(msig)
+            }
+        }
+        await new Promise(resolve => { setTimeout(resolve, 10000) })
+    }
+}
+
+listenMultisigs()
 
 const Verifier = {
 
     registerApp: async ( applicationAddress, applicationId, datetimeRequested) => {
+
+        console.log(await wallet.getAccounts())
 
         // Creates the M1 App multisig
         // TODO last paremeter is the index account in the wallet. For testing purposes we are set the value in config
