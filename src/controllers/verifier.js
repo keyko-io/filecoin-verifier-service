@@ -27,6 +27,11 @@ const verifierAddress = config.verifierAddress
 
 async function checkMultisig(msig) {
     try {
+        let info = await api.multisigInfo(msig)
+        if (info.initial_balance < BigInt(info.next_txn_id)) {
+            return
+        }
+        console.log(info)
         const lst = await api.pendingTransactions(msig)
         for (const tx of lst) {
             console.log(msig, tx)
