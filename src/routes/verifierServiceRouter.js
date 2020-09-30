@@ -83,7 +83,6 @@ serviceRoutes.post(
         } else {
             try {
 
-                // TODO implement logic in verifier
                 const response = await Verifier.registerApp(
                     req.body.applicationAddress,
                     req.body.applicationId,
@@ -91,7 +90,7 @@ serviceRoutes.post(
                 )
                  req.body.agent
                 
-                const { txId } = response.result
+                const { app_multisig_addr } = response.result
 
                 res.status(200).json({
                     success: true,
@@ -99,8 +98,72 @@ serviceRoutes.post(
                     applicationId: req.body.applicationId,
                     // TODO datetimeApproved: ,
                     verifierMsigAddress: verifierMsigAddress, //M0
-                    appMsigAddress: "", //M1
-                    // TODO datacap??
+                    appMsigAddress: app_multisig_addr, //M1
+                    // TODO datacap limit for app??
+                    datacapAllocated: 1000000000000    
+                })
+            } catch (error) {
+                res.status(500).json({ success: false, message: error.message })
+            }
+        }
+    }
+)
+
+
+// JUST FOR TESTING E2E
+// simulates an "app" endpoint that  allows clients to request datacap
+serviceRoutes.post(
+    '/verifier/client/datacap',
+    // TODO check PSK in HTTP Authorization Header
+
+    [
+        check('clientAddress', 'Client address not sent').exists(),
+        check('verifierMsigAddress', 'VErifier multisig address not sent').exists(), //M0
+        check('appMsigAddress', 'App multi sig address not sent').exists(), //M1
+        check('applicationAddress', 'Application address not sent').exists(),
+        check('applicationId', 'App id not sent').exists(),
+        check('datetimeRequested', 'Client address not sent').exists(),
+        body('clientAddress').custom((value) => {
+            /* TODO Add Validations to check Filecoin Address
+            if (!Eth.isAddress(value)) {
+                return Promise.reject(new Error('Invalid Ethereum address'))
+            } else {
+                return Promise.resolve()
+            }*/
+            return Promise.resolve()
+        })
+    ],
+    async (req, res) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            res.status(400).json({
+                success: false,
+                message: 'Bad Request',
+                errors: errors.array()
+            })
+        } else {
+            try {
+                
+                const response = await Verifier.requestDatacap(
+                    req.body.clientAddress,
+                    req.body.applicationAddress,
+                    req.body.applicationId,
+                    req.body.verifierMsigAddress,
+                    req.body.appMsigAddress,
+                    req.body.datetimeRequested
+                )
+                 req.body.agent
+                
+                const { app_multisig_addr } = response.result
+
+                res.status(200).json({
+                    success: true,
+                    applicationAddress: req.body.clientAddress,
+                    applicationId: req.body.applicationId,
+                    // TODO datetimeApproved: ,
+                    verifierMsigAddress: verifierMsigAddress, //M0
+                    appMsigAddress: app_multisig_addr, //M1
+                    // TODO datacap limit for app??
                     datacapAllocated: 1000000000000    
                 })
             } catch (error) {
