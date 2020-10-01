@@ -20,9 +20,10 @@ const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
     token: async () => {
       return token
     },
- }), wallet) 
+ }), wallet)
 
 const verifierMsigAddress = config.verifierMsigAddress
+const appMsigAddress = config.appMsigAddress
 const verifierAddress = config.verifierAddress
 
 async function checkMultisig(msig) {
@@ -55,18 +56,23 @@ async function checkMultisig(msig) {
         }
     }
     catch (err) {
-        console.log('cannot read msig', msig, err)
+        console.log('Cannot read msig', msig, err)
     }
 }
 
 async function listenMultisigs() {
     while (true) {
-        let msigs = await api.listSigners(verifierMsigAddress)
-        for (let msig of msigs) {
-            console.log('Polling...', msig)
-            if (await api.actorType(msig) == 'fil/1/multisig') {
-                await checkMultisig(msig)
+        try {
+            let msigs = await api.listSigners(verifierMsigAddress)
+            for (let msig of msigs) {
+                console.log('Polling...', msig)
+                if (await api.actorType(msig) == 'fil/1/multisig') {
+                    await checkMultisig(msig)
+                }
             }
+        }
+        catch (err) {
+            console.log('Error polling msigs', err)
         }
         await new Promise(resolve => { setTimeout(resolve, 10000) })
     }
@@ -101,9 +107,9 @@ const Verifier = {
 
 
     // JUST FOR TESTING !
-    requestDatacap: async ( clientAddress, applicationAddress, applicationId, verifierMsigAddress, appMsigAddress, datetimeRequested) => {
+    requestDatacap: async ( clientAddress, datetimeRequested) => {
 
-        
+        const txId = await api.multisigProposeClient(verifierMsigAddress, appMsigAddress, clientAddress, 1n, 4)
         // Instance the API with the address of the app
 
         // Propose  verifreg.addDatacap to the verifierMsigAddress (M0)
@@ -116,9 +122,7 @@ const Verifier = {
 
         
         // TODO Return value
-        return {
-            txId: "",
-        }
+        return { txId }
         
 
     }
