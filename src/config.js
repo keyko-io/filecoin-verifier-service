@@ -2,6 +2,7 @@ export default {
     env: process.env.NODE_ENV || 'development',
     server: {
         port: process.env.SERVER_PORT || 3001,
+        host: process.env.SERVER_HOST || '127.0.0.1',
         nodeToken: process.env.NODE_TOKEN || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.q9O3FVNyhln_nLN62Mflc9n_Kfh7w0unQdY0qLGqHoE',
         nodeUrl: process.env.NODE_URL || 'ws://localhost:1234/rpc/v0'
     },

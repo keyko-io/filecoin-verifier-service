@@ -19,8 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use('/', serviceRoutes)
 
-
-const server = app.listen(config.server.port, (error) => {
+const server = app.listen(config.server.port, config.server.host, (error) => {
     if (error) {
         logger.error('Error starting server:')
         logger.error(error)
