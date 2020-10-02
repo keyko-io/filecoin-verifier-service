@@ -46,11 +46,6 @@ sleep 15
 node $JSDIR/samples/api/propose-verifier.js t01009
 lotus msig inspect t080
 sleep 15
-node $JSDIR/samples/api/propose-verifier.js t01004
-lotus msig inspect t080
-sleep 15
-node $JSDIR/samples/api/propose-verifier.js t01003
-sleep 15
 lotus msig inspect t080
 
 curl -H "Content-Type: application/json" -d '{"applicationAddress": "t01007", "applicationId": 1, "datetimeRequested": 1}' localhost:3001/verifier/app/register
@@ -58,12 +53,12 @@ sleep 15
 lotus msig inspect t01009
 lotus msig inspect t01010
 
-curl -H "Content-Type: application/json" -d "{\"clientAddress\": \"$(lotus wallet new)\", \"datetimeRequested\": 1}" localhost:3001/verifier/client/datacap
+
+curl -H "Content-Type: application/json" -d "{\"clientAddress\": \"t01006\", \"datetimeRequested\": 1}" localhost:3001/verifier/client/datacap
 
 lotus-shed verifreg list-verifiers
 
-node $JSDIR/samples/api/add-client.js t01006
-sleep 15
+sleep 30
 lotus-shed verifreg list-clients
 
 export DATA=$(lotus client import dddd | awk '{print $NF}')

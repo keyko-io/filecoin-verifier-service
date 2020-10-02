@@ -73,5 +73,5 @@ EXPOSE 2345
 
 ENTRYPOINT ["/bin/entrypoint"]
 
-# docker build . -t mrsmkl/lotus:20-08-26
-# docker run --name lotus --rm -ti -p 1234:1234 -p 2345:2345  mrsmkl/lotus:20-08-26
+# docker build -f e2e-test/Dockerfile . -t mrsmkl/service:20-10-02
+# docker run --name lotus --rm -ti -p 1234:1234 -p 2345:2345  mrsmkl/service:20-08-26
