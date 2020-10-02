@@ -100,7 +100,7 @@ serviceRoutes.post(
                     verifierMsigAddress: config.verifierMsigAddress, //M0
                     appMsigAddress: app_multisig_addr, //M1
                     // TODO datacap limit for app??
-                    datacapAllocated: 1000000000000    
+                    datacapAllocated: 123_000_000_000    
                 })
             } catch (error) {
                 res.status(500).json({ success: false, message: error.message })
@@ -108,7 +108,6 @@ serviceRoutes.post(
         }
     }
 )
-
 
 // JUST FOR TESTING E2E
 // simulates an "app" endpoint that  allows clients to request datacap
@@ -118,18 +117,8 @@ serviceRoutes.post(
 
     [
         check('clientAddress', 'Client address not sent').exists(),
-        check('verifierMsigAddress', 'VErifier multisig address not sent').exists(), //M0
-        check('appMsigAddress', 'App multi sig address not sent').exists(), //M1
-        check('applicationAddress', 'Application address not sent').exists(),
-        check('applicationId', 'App id not sent').exists(),
         check('datetimeRequested', 'Client address not sent').exists(),
         body('clientAddress').custom((value) => {
-            /* TODO Add Validations to check Filecoin Address
-            if (!Eth.isAddress(value)) {
-                return Promise.reject(new Error('Invalid Ethereum address'))
-            } else {
-                return Promise.resolve()
-            }*/
             return Promise.resolve()
         })
     ],
@@ -146,10 +135,6 @@ serviceRoutes.post(
                 
                 const response = await Verifier.requestDatacap(
                     req.body.clientAddress,
-                    req.body.applicationAddress,
-                    req.body.applicationId,
-                    req.body.verifierMsigAddress,
-                    req.body.appMsigAddress,
                     req.body.datetimeRequested
                 )
 
@@ -159,8 +144,7 @@ serviceRoutes.post(
                 res.status(200).json({
                     success: true,
                     clientAddress: req.body.clientAddress,
-                    applicationAddress: req.body.clientAddress,
-                    applicationId: req.body.applicationId,
+                    txId,
                     // TODO datetimeApproved: ,
                     // TODO datacap??
                     datacapAllocated: 1000000000000    

@@ -20,13 +20,19 @@ const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
     token: async () => {
       return token
     },
- }), wallet) 
+ }), wallet)
 
 const verifierMsigAddress = config.verifierMsigAddress
+const appMsigAddress = config.appMsigAddress
 const verifierAddress = config.verifierAddress
 
 async function checkMultisig(msig) {
     try {
+        let info = await api.multisigInfo(msig)
+        if (info.initial_balance < BigInt(info.next_txn_id)) {
+            return
+        }
+        console.log(info)
         const lst = await api.pendingTransactions(msig)
         for (const tx of lst) {
             console.log(msig, tx)
@@ -43,25 +49,30 @@ async function checkMultisig(msig) {
             if (tx.parsed.parsed.name != 'addVerifiedClient') {
                 continue
             }
-            if (tx.parsed.params.cap > 12340000000000n) {
+            if (tx.parsed.params.cap == tx.tx.value * 1000000000n) {
                 continue
             }
             await api.approvePending(msig, tx, 3)
         }
     }
     catch (err) {
-        console.log('cannot read msig', msig)
+        console.log('Cannot read msig', msig, err)
     }
 }
 
 async function listenMultisigs() {
     while (true) {
-        let msigs = await api.listSigners(verifierMsigAddress)
-        for (let msig of msigs) {
-            console.log('Polling...', msig)
-            if (await api.actorType(msig) == 'fil/1/multisig') {
-                await checkMultisig(msig)
+        try {
+            let msigs = await api.listSigners(verifierMsigAddress)
+            for (let msig of msigs) {
+                console.log('Polling...', msig)
+                if (await api.actorType(msig) == 'fil/1/multisig') {
+                    await checkMultisig(msig)
+                }
             }
+        }
+        catch (err) {
+            console.log('Error polling msigs', err)
         }
         await new Promise(resolve => { setTimeout(resolve, 10000) })
     }
@@ -80,7 +91,7 @@ const Verifier = {
         console.log("Creating m1 multisig...")
         console.log("token: " + token)
         console.log(wallet.getAccounts(config.testing.verifierIndexAccount))
-        const app_multisig_addr = await api.newMultisig([verifierAddress, applicationAddress], 2, config.testing.verifierIndexAccount)
+        const app_multisig_addr = await api.newMultisig([verifierAddress, applicationAddress], 2, 123, config.testing.verifierIndexAccount)
         console.log('M1 app_multisig_addr ', app_multisig_addr)
 
         // add app multisig  to M0 Verifier Multising Address
@@ -96,9 +107,9 @@ const Verifier = {
 
 
     // JUST FOR TESTING !
-    requestDatacap: async ( clientAddress, applicationAddress, applicationId, verifierMsigAddress, appMsigAddress, datetimeRequested) => {
+    requestDatacap: async ( clientAddress, datetimeRequested) => {
 
-        
+        const txId = await api.multisigProposeClient(verifierMsigAddress, appMsigAddress, clientAddress, 1n, 4)
         // Instance the API with the address of the app
 
         // Propose  verifreg.addDatacap to the verifierMsigAddress (M0)
@@ -111,9 +122,7 @@ const Verifier = {
 
         
         // TODO Return value
-        return {
-            txId: "",
-        }
+        return { txId }
         
 
     }
