@@ -1,20 +1,26 @@
 /* eslint-disable prefer-promise-reject-errors */
 
-import BigNumber from 'bignumber.js'
-import moment from 'moment'
 import config from '../config.js'
-import client from '../server.js'
-import logger from '../utils/logger.js'
 import VerifyAPI from '@keyko-io/filecoin-verifier-tools/api/api.js'
 import BasicWallet from '../utils/basicWallet.js'
+import KeyWallet from '../utils/keyWallet.js'
 
 const endpointUrl = config.server.nodeUrl
 const token = config.server.nodeToken
 
+function makeWallet(key, mnemonic) {
+    if (key) {
+        return new KeyWallet(key, true)
+    }
+    else {
+        return new BasicWallet(mnemonic, config.testing.path)
+    }
+}
+
 // ONLY FOR TESTING
 //TODO we need to instantiate some kind of wallet with the custodied Private Key
-const path = config.testing.path
-const wallet = new BasicWallet(config.testing.verifierSeedphrase, path)
+const wallet = makeWallet(config.verifierPrivateKey, config.testing.verifierSeedphrase)
+const appWallet = makeWallet(config.appPrivateKey, config.testing.verifierSeedphrase)
 
 const api = new VerifyAPI(VerifyAPI.standAloneProvider(endpointUrl, {
     token: async () => {
@@ -105,11 +111,10 @@ const Verifier = {
 
     },
 
-
     // JUST FOR TESTING !
     requestDatacap: async ( clientAddress, datetimeRequested) => {
 
-        const txId = await api.multisigProposeClient(verifierMsigAddress, appMsigAddress, clientAddress, 1n, 4)
+        const txId = await api.multisigProposeClient(verifierMsigAddress, appMsigAddress, clientAddress, 1n, config.testing.appIndexAccount, appWallet)
         // Instance the API with the address of the app
 
         // Propose  verifreg.addDatacap to the verifierMsigAddress (M0)

@@ -18,6 +18,8 @@
     "changelog": "auto-changelog -p"
   },
   "dependencies": {
+    "@keyko-io/filecoin-verifier-tools": "../filecoin-verifier-tools",
+    "@zondax/filecoin-signing-tools": "^0.7.1",
     "bignumber.js": "^9.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^4.2.0",
@@ -28,16 +30,15 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.5.0",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
-    "@keyko-io/filecoin-verifier-tools": "^0.5.1",
-    "@zondax/filecoin-signing-tools": "^0.7.1",
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.11.1",
-    "@babel/plugin-transform-runtime": "^7.11.1",
     "@babel/node": "^7.10.1",
+    "@babel/plugin-transform-runtime": "^7.11.1",
     "@babel/preset-env": "^7.10.3",
     "@babel/register": "^7.10.1",
     "auto-changelog": "^2.2.0",

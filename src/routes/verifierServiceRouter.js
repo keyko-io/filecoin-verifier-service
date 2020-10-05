@@ -1,7 +1,8 @@
 import express from 'express'
-
-import pkg from 'express-validator';
-const { check, body, validationResult } = pkg;
+import fs from 'fs'
+import pkg from 'express-validator'
+import jwt from 'jsonwebtoken'
+const { check, body, validationResult } = pkg
 //import { check, body, validationResult } from 'express-validator'
 
 import Verifier from '../controllers/verifier.js'
@@ -27,6 +28,27 @@ const network = nodeUrl.includes('localhost')
     ? 'Mainnet'
     : 'Unknown'
 
+function generateAccessToken() {
+    const token = jwt.sign({ username: 'app' }, config.server.tokenSecret, { expiresIn: '1800000s' })
+    fs.writeFileSync('token', token)
+}
+
+generateAccessToken()
+
+function authenticateToken(req, res, next) {
+    // Gather the jwt access token from the request header
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return res.sendStatus(401) // if there isn't any token
+  
+    jwt.verify(token, config.server.tokenSecret, (err, user) => {
+      console.log(err, user)
+      if (err) return res.sendStatus(403)
+      req.user = user
+      next() // pass the execution off to whatever request the client intended
+    })
+}
+  
 
 serviceRoutes.get('/', (req, res) => {
     if (req.get('Accept') === 'application/json') {
@@ -59,6 +81,7 @@ serviceRoutes.post(
     '/verifier/app/register',
     // TODO check PSK in HTTP Authorization Header
     [
+        authenticateToken,
         check('applicationAddress', 'Client address not sent').exists(),
         check('applicationId', 'Application ID not sent').exists(),
         check('datetimeRequested', 'Date not sent').exists(),
@@ -116,6 +139,7 @@ serviceRoutes.post(
     // TODO check PSK in HTTP Authorization Header
 
     [
+        authenticateToken,
         check('clientAddress', 'Client address not sent').exists(),
         check('datetimeRequested', 'Client address not sent').exists(),
         body('clientAddress').custom((value) => {
