@@ -18,7 +18,7 @@
     "changelog": "auto-changelog -p"
   },
   "dependencies": {
-    "@keyko-io/filecoin-verifier-tools": "../filecoin-verifier-tools",
+    "@keyko-io/filecoin-verifier-tools": "^0.5.2",
     "@zondax/filecoin-signing-tools": "^0.7.1",
     "bignumber.js": "^9.0.0",
     "body-parser": "^1.19.0",
