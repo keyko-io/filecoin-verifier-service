@@ -48,13 +48,13 @@ lotus msig inspect t080
 sleep 15
 lotus msig inspect t080
 
-curl -H "Content-Type: application/json" -d '{"applicationAddress": "t01007", "applicationId": 1, "datetimeRequested": 1}' localhost:3001/verifier/app/register
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $(cat /filecoin-verifier-service/token)" -d '{"applicationAddress": "t01007", "applicationId": 1, "datetimeRequested": 1}' localhost:3001/verifier/app/register
 sleep 15
 lotus msig inspect t01009
 lotus msig inspect t01010
 
 
-curl -H "Content-Type: application/json" -d "{\"clientAddress\": \"t01006\", \"datetimeRequested\": 1}" localhost:3001/verifier/client/datacap
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $(cat /filecoin-verifier-service/token)" -d "{\"clientAddress\": \"t01006\", \"datetimeRequested\": 1}" localhost:3001/verifier/client/datacap
 
 lotus-shed verifreg list-verifiers
 
