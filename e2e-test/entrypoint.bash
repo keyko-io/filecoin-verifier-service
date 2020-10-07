@@ -80,6 +80,7 @@ main() {
 
   echo "Token for node: $(cat ~/.lotus/token)"
   echo "Token for miner: $(cat ~/.lotusminer/token)"
+  echo "Token for service: $(cat /filecoin-verifier-service/token)"
 
   sleep 1000000000
 }
