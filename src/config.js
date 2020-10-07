@@ -11,8 +11,10 @@ export default {
         tokenSecret: process.env.TOKEN_SECRET || testTokenSecret,
         nodeUrl: process.env.NODE_URL || 'ws://localhost:1234/rpc/v0'
     },
-    verifierMsigAddress: "t01009",
-    appMsigAddress: "t01010",
+    runAppService: process.env.RUN_APP_SERVICE || "true",
+    runService: process.env.RUN_SERVICE || "true",
+    verifierMsigAddress: process.env.VERIFIER_MSIG_ADDRESS || "t01009",
+    appMsigAddress: process.env.APP_MSIG_ADDRESS || "t01010",
     verifierAddress: process.env.VERIFIER_ADDRESS || 't1gechnbsldgbqan4q2dwjsicbh25n5xvvdzhqd3y',
     verifierPrivateKey: process.env.VERIFIER_PRIVATE_KEY,
     appPrivateKey: process.env.APP_PRIVATE_KEY,
