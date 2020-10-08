@@ -84,7 +84,9 @@ async function listenMultisigs() {
     }
 }
 
-listenMultisigs()
+if (config.runService === 'true') {
+    listenMultisigs()
+}
 
 const Verifier = {
 

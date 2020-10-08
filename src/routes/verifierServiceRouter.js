@@ -35,6 +35,22 @@ function generateAccessToken() {
 
 generateAccessToken()
 
+function isService(req, res, next) {
+    if (config.runService === 'true') {
+        next()
+    } else {
+        return res.status(500).json({ success: false, message: "Automatic verification service disabled" })
+    }
+}
+
+function isAppService(req, res, next) {
+    if (config.runAppService === 'true') {
+        next()
+    } else {
+        return res.status(500).json({ success: false, message: "Application endpoint disabled" })
+    }
+}
+
 function authenticateToken(req, res, next) {
     // Gather the jwt access token from the request header
     const authHeader = req.headers['authorization']
@@ -79,8 +95,8 @@ serviceRoutes.get('/', (req, res) => {
 */
 serviceRoutes.post(
     '/verifier/app/register',
-    // TODO check PSK in HTTP Authorization Header
     [
+        isService,
         authenticateToken,
         check('applicationAddress', 'Client address not sent').exists(),
         check('applicationId', 'Application ID not sent').exists(),
@@ -132,13 +148,11 @@ serviceRoutes.post(
     }
 )
 
-// JUST FOR TESTING E2E
-// simulates an "app" endpoint that  allows clients to request datacap
+// An "app" endpoint that  allows clients to request datacap
 serviceRoutes.post(
     '/verifier/client/datacap',
-    // TODO check PSK in HTTP Authorization Header
-
     [
+        isAppService,
         authenticateToken,
         check('clientAddress', 'Client address not sent').exists(),
         check('datetimeRequested', 'Client address not sent').exists(),

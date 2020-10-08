@@ -49,19 +49,20 @@ RUN git clone https://github.com/keyko-io/filecoin-verifier-tools/ --depth 1 --b
 RUN cd filecoin-verifier-tools/ && \
     yarn
 
-COPY e2e-test/entrypoint.bash /bin/entrypoint
-COPY e2e-test/rootkey1 /rootkey1
-COPY e2e-test/dddd /dddd
-COPY e2e-test/setup.sh /bin/setup.sh
-COPY e2e-test/run-service.sh /bin/run-service.sh
-COPY e2e-test/config.toml /root/config.toml
-COPY e2e-test/config-miner.toml /root/config-miner.toml
-
 COPY src /filecoin-verifier-service/src
 COPY package.json /filecoin-verifier-service/package.json
 
 RUN cd filecoin-verifier-service/ && \
     yarn
+
+COPY e2e-test/entrypoint.bash /bin/entrypoint
+COPY e2e-test/rootkey1 /rootkey1
+COPY e2e-test/dddd /dddd
+COPY e2e-test/setup.sh /bin/setup.sh
+COPY e2e-test/run-service.sh /bin/run-service.sh
+COPY e2e-test/run-app-service.sh /bin/run-app-service.sh
+COPY e2e-test/config.toml /root/config.toml
+COPY e2e-test/config-miner.toml /root/config-miner.toml
 
 # API port
 EXPOSE 1234
@@ -73,7 +74,9 @@ EXPOSE 2345
 
 EXPOSE 3001
 
+EXPOSE 4001
+
 ENTRYPOINT ["/bin/entrypoint"]
 
-# docker build -f e2e-test/Dockerfile . -t mrsmkl/service:20-10-02
-# docker run --rm --name lotus -ti -p 1234:1234 -p 2345:2345 -p 3001:3001 mrsmkl/service:20-10-02
+# docker build -f e2e-test/Dockerfile . -t mrsmkl/service:20-10-07
+# docker run --rm --name lotus -ti -p 1234:1234 -p 2345:2345 -p 3001:3001 -p 4001:4001 mrsmkl/service:20-10-07
