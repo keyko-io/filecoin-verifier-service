@@ -40,26 +40,37 @@ do
  lotus wallet balance $ROOT2
 done
 
+echo "Funds received, now creating new verifier multisig"
+
 node $JSDIR/samples/api/new-msig.js
 sleep 15
+lotus msig inspect t01009
+
+echo "Add the multisig as verifier"
 
 node $JSDIR/samples/api/propose-verifier.js t01009
 lotus msig inspect t080
 sleep 15
 lotus msig inspect t080
+
+echo "Start service for application, register"
+
 tmux new-window -t lotus:4 -n appservice -d bash run-app-service.sh
 
 sleep 30
 lotus msig inspect t01009
 lotus msig inspect t01010
 
+echo "Request datacap from automatic verifier"
 
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $(cat /filecoin-verifier-service/token)" -d "{\"clientAddress\": \"t01006\", \"datetimeRequested\": 1}" localhost:4001/verifier/client/datacap
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $(cat /filecoin-verifier-service/token)" -d "{\"clientAddress\": \"t01006\", \"datetimeRequested\": 1}" localhost:4001/verifier/client/datacap ; echo
 
 lotus-shed verifreg list-verifiers
 
 sleep 30
 lotus-shed verifreg list-clients
+
+echo "Creating verified deal"
 
 export DATA=$(lotus client import dddd | awk '{print $NF}')
 

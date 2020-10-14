@@ -35,10 +35,10 @@ const verifierAddress = config.verifierAddress
 async function checkMultisig(msig) {
     try {
         let info = await api.multisigInfo(msig)
-        if (info.initial_balance < BigInt(info.next_txn_id)) {
+        console.log(info)
+        if (info.unlock_duration < info.next_txn_id) {
             return
         }
-        console.log(info)
         const lst = await api.pendingTransactions(msig)
         for (const tx of lst) {
             console.log(msig, tx)
@@ -55,9 +55,10 @@ async function checkMultisig(msig) {
             if (tx.parsed.parsed.name != 'addVerifiedClient') {
                 continue
             }
+            /*
             if (tx.parsed.params.cap == tx.tx.value * 1000000000n) {
                 continue
-            }
+            }*/
             await api.approvePending(msig, tx, 3)
         }
     }
@@ -72,7 +73,7 @@ async function listenMultisigs() {
             let msigs = await api.listSigners(verifierMsigAddress)
             for (let msig of msigs) {
                 console.log('Polling...', msig)
-                if (await api.actorType(msig) == 'fil/1/multisig') {
+                if (await api.actorType(msig) == 'fil/2/multisig') {
                     await checkMultisig(msig)
                 }
             }
