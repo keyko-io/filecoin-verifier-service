@@ -3,7 +3,8 @@ const testVerifierSeedphrase = "exit mystery juice city argue breeze film learn 
 const testTokenSecret = '5fe21ae743ad7cafabf1f5003d898da760db0a615ad08036cbbeb73d03096ff6cddf0263e746b4272a5d0b79bc5b27dee244dc089ad0e47a52a2c6c81e839b73'
 
 export default {
-    env: process.env.NODE_ENV || 'development',
+    env: process.env.NODE_ENV || 'development',  // development, Nerpanet, Mainnet
+    rootPath:  process.env.ROOT_PATH || "/",
     server: {
         port: process.env.SERVER_PORT || 3001,
         host: process.env.SERVER_HOST || '127.0.0.1',
@@ -24,12 +25,5 @@ export default {
         appIndexAccount: process.env.VERIFIER_ACCOUNT_INDEX || "4",
         path: "m/44'/1'/0/0"
     }
-    /*,
-    database: {
-        uri: process.env.ELASTIC_URL || 'http://localhost:9200',
-        user: process.env.ELASTIC_USER || 'elastic',
-        password: process.env.ELASTIC_PASSWORD || 'changeme',
-        index: process.env.ELASTIC_INDEX || 'faucetdb'
-    }
-    */
+
 }

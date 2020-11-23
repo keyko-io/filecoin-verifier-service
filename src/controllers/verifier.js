@@ -9,8 +9,9 @@ const endpointUrl = config.server.nodeUrl
 const token = config.server.nodeToken
 
 function makeWallet(key, mnemonic) {
+    const testnet = (config.env != "Mainnet")
     if (key) {
-        return new KeyWallet(key, true)
+        return new KeyWallet(key, testnet)
     }
     else {
         return new BasicWallet(mnemonic, config.testing.path)

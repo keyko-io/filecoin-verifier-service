@@ -17,7 +17,7 @@ app.use(cors())
 app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use('/', serviceRoutes)
+app.use(config.rootPath + '/v1', serviceRoutes)
 
 const server = app.listen(config.server.port, config.server.host, (error) => {
     if (error) {

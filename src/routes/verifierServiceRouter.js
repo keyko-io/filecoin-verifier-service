@@ -7,30 +7,16 @@ const { check, body, validationResult } = pkg
 
 import Verifier from '../controllers/verifier.js'
 import config from '../config.js'
-//import pkg from '../../package.json'
+import packageJson from '../../package.json'
 
-const { nodeUrl } = config.server
-
-
-//const { name, version } = pkg
-const name = "Verify App Service"
-const version = "0.1.0"
-
+const { env } = config
+const { name, version } = packageJson
 const serviceRoutes = express.Router()
 
-const network = nodeUrl.includes('localhost')
-    ? 'Localhost'
-    : nodeUrl.includes('nerpa')
-    ? 'Nerpa'
-    : nodeUrl.includes('testnet')
-    ? 'Testnet'
-    : nodeUrl.includes('mainnet')
-    ? 'Mainnet'
-    : 'Unknown'
-
 function generateAccessToken() {
-    const token = jwt.sign({ username: 'app' }, config.server.tokenSecret, { expiresIn: '1800000s' })
+    const token = jwt.sign({ username: 'app' }, config.server.tokenSecret, {})
     fs.writeFileSync('token', token)
+    console.log("token: " + token);
 }
 
 generateAccessToken()
@@ -65,20 +51,19 @@ function authenticateToken(req, res, next) {
     })
 }
   
-
-serviceRoutes.get('/', (req, res) => {
+serviceRoutes.get('/health', (req, res) => {
     if (req.get('Accept') === 'application/json') {
         res.json({
             software: name,
             version,
-            network
+            env
         })
     } else {
         res.send(
             `<strong><code>
             Verify App Service v${version}<br />
             <a href="https://github.com/keyko-io/filecoin-verifier-service">github.com/keyko-io/filecoin-verifier-service</a><br />
-            <span>Running against ${network}</span>
+            <span>Running against ${env}</span>
         </code></strong>`
         )
     }
@@ -100,7 +85,7 @@ serviceRoutes.post(
         authenticateToken,
         check('applicationAddress', 'Client address not sent').exists(),
         check('applicationId', 'Application ID not sent').exists(),
-        check('datetimeRequested', 'Date not sent').exists(),
+      //  check('datetimeRequested', 'Date not sent').exists(),
         body('applicationAddress').custom((value) => {
             /* TODO Add Validations to check Filecoin Address
             if (!Eth.isAddress(value)) {
@@ -121,13 +106,11 @@ serviceRoutes.post(
             })
         } else {
             try {
-
                 const response = await Verifier.registerApp(
                     req.body.applicationAddress,
                     req.body.applicationId,
-                    req.body.datetimeRequested
-                )
-                
+                    "" //req.body.datetimeRequested
+                )  
                  console.log("response:", response) 
                  const { app_multisig_addr } = response
 
@@ -139,7 +122,7 @@ serviceRoutes.post(
                     verifierMsigAddress: config.verifierMsigAddress, //M0
                     appMsigAddress: app_multisig_addr, //M1
                     // TODO datacap limit for app??
-                    datacapAllocated: 123_000_000_000    
+                    //datacapAllocated: 123_000_000_000    
                 })
             } catch (error) {
                 res.status(500).json({ success: false, message: error.message })
