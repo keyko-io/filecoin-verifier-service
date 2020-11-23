@@ -7,10 +7,8 @@ const { check, body, validationResult } = pkg
 
 import Verifier from '../controllers/verifier.js'
 import config from '../config.js'
-import packageJson from '../../package.json'
 
-const { env } = config
-const { name, version } = packageJson
+const { env, name, version } = config
 const serviceRoutes = express.Router()
 
 function generateAccessToken() {
@@ -70,13 +68,11 @@ serviceRoutes.get('/health', (req, res) => {
 })
 
 /*
-
 {
   "applicationAddress": "t01032",
   "applicationId": "LIKE_SLATE_ID",
   "datetimeRequested": "2020-02-08T08:13:49Z"
 }
-
 */
 serviceRoutes.post(
     '/verifier/app/register',
@@ -168,7 +164,7 @@ serviceRoutes.post(
                     txId,
                     // TODO datetimeApproved: ,
                     // TODO datacap??
-                    datacapAllocated: 1000000000000    
+                    datacapAllocated: config.appDatacapAllocation    
                 })
             } catch (error) {
                 res.status(500).json({ success: false, message: error.message })

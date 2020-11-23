@@ -4,7 +4,9 @@ const testTokenSecret = '5fe21ae743ad7cafabf1f5003d898da760db0a615ad08036cbbeb73
 
 export default {
     env: process.env.NODE_ENV || 'development',  // development, Nerpanet, Mainnet
-    rootPath:  process.env.ROOT_PATH || "/",
+    name: process.env.NAME || "Filecoin Verify App Service",
+    version: 0.2,
+    rootPath:  process.env.ROOT_PATH || "",
     server: {
         port: process.env.SERVER_PORT || 3001,
         host: process.env.SERVER_HOST || '127.0.0.1',
@@ -15,10 +17,11 @@ export default {
     runAppService: process.env.RUN_APP_SERVICE || "true",
     runService: process.env.RUN_SERVICE || "true",
     verifierMsigAddress: process.env.VERIFIER_MSIG_ADDRESS || "t01009",
-    appMsigAddress: process.env.APP_MSIG_ADDRESS || "t01010",
     verifierAddress: process.env.VERIFIER_ADDRESS || 't1gechnbsldgbqan4q2dwjsicbh25n5xvvdzhqd3y',
     verifierPrivateKey: process.env.VERIFIER_PRIVATE_KEY,
+    appMsigAddress: process.env.APP_MSIG_ADDRESS || "t01010",
     appPrivateKey: process.env.APP_PRIVATE_KEY,
+    appDatacapAllocation:  process.env.APP_DATACAP_ALLOCATION || 1000000000n, // default 1 GB
     testing: {
         verifierSeedphrase: process.env.VERIFIER_SEED_PHRASE || testVerifierSeedphrase,
         verifierIndexAccount: process.env.VERIFIER_ACCOUNT_INDEX || "3",
