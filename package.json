@@ -1,6 +1,6 @@
 {
   "name": "filecoin-verifier-service",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Automated Verify Service for Apps",
   "author": "Keyko",
   "license": "Apache-2.0",

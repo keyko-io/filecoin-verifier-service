@@ -134,7 +134,7 @@ serviceRoutes.post(
         isAppService,
         authenticateToken,
         check('clientAddress', 'Client address not sent').exists(),
-        check('datetimeRequested', 'Client address not sent').exists(),
+        //TODO check('datetimeRequested', 'Client address not sent').exists(),
         body('clientAddress').custom((value) => {
             return Promise.resolve()
         })
@@ -152,7 +152,7 @@ serviceRoutes.post(
                 
                 const response = await Verifier.requestDatacap(
                     req.body.clientAddress,
-                    req.body.datetimeRequested
+                    "",//req.body.datetimeRequested
                 )
 
                 console.log("response:", response)
