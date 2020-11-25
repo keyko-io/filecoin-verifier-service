@@ -164,7 +164,7 @@ serviceRoutes.post(
                     txId,
                     // TODO datetimeApproved: ,
                     // TODO datacap??
-                    datacapAllocated: config.appDatacapAllocation    
+                    datacapAllocated: config.appDatacapAllocation.toString()     
                 })
             } catch (error) {
                 res.status(500).json({ success: false, message: error.message })
