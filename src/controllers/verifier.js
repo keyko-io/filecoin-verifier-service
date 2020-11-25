@@ -73,7 +73,8 @@ async function listenMultisigs() {
             let msigs = await api.listSigners(verifierMsigAddress)
             for (let msig of msigs) {
                 console.log('Polling...', msig)
-                if (await api.actorType(msig) == 'fil/1/multisig') {
+                let atype = await api.actorType(msig)
+                if (atype.match(/multisig/)) {
                     await checkMultisig(msig)
                 }
             }
