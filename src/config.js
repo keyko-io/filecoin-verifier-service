@@ -21,7 +21,7 @@ export default {
     verifierPrivateKey: process.env.VERIFIER_PRIVATE_KEY,
     appMsigAddress: process.env.APP_MSIG_ADDRESS || "t01010",
     appPrivateKey: process.env.APP_PRIVATE_KEY,
-    appDatacapAllocation:  process.env.APP_DATACAP_ALLOCATION || 1000000000n, // default 1 GB
+    appDatacapAllocation:  process.env.APP_DATACAP_ALLOCATION || 1n, // default 1 GB
     testing: {
         verifierSeedphrase: process.env.VERIFIER_SEED_PHRASE || testVerifierSeedphrase,
         verifierIndexAccount: process.env.VERIFIER_ACCOUNT_INDEX || "3",

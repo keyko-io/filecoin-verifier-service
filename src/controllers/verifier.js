@@ -118,7 +118,8 @@ const Verifier = {
     // JUST FOR TESTING!
     requestDatacap: async ( clientAddress, datetimeRequested) => {
 
-        const txId = await api.multisigProposeClient(verifierMsigAddress, appMsigAddress, clientAddress, config.appDatacapAllocation, config.testing.appIndexAccount, appWallet) 
+        const datacapAllocation = BigInt(config.appDatacapAllocation)
+        const txId = await api.multisigProposeClient(verifierMsigAddress, appMsigAddress, clientAddress, datacapAllocation, config.testing.appIndexAccount, appWallet) 
         // TODO Return value
         return { txId }
     }
