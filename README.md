@@ -19,7 +19,6 @@ npm run start
 
 The application needs to have the following common environment variables defined:
 
-Root Path
 ```sh
 ROOT_PATH // Default ""
 NODE_ENV // Default  "development". Values: "development, Nerpanet, Mainnet"
