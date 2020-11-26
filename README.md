@@ -42,7 +42,7 @@ VERIFIER_PRIVATE_KEY
 VERIFIER_MSIG_ADDRESS 
 ```
 
-To run service as "Automated Verifier"
+To run service as "App"
 ```sh
 RUN_SERVICE // Set to false
 RUN_APP_SERVICE // Set to true
