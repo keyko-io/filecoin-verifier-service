@@ -56,7 +56,7 @@ async function checkMultisig(msig) {
             if (tx.parsed.parsed.name != 'addVerifiedClient') {
                 continue
             }
-            if (tx.parsed.params.cap == tx.tx.value * 1000000000n) {
+            if (tx.parsed.params.cap == tx.tx.value * 1073741824n) { // 1073741824n = 1 GiB
                 continue
             }
             await api.approvePending(msig, tx, 3)
